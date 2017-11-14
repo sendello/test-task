@@ -1,0 +1,28 @@
+
+services:
+    
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    AppBundle\:
+        resource: '../../src/AppBundle/*'
+        exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+
+    AppBundle\Controller\:
+        resource: '../../src/AppBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+
+    article.normalizer:
+        class: AppBundle\Serializer\Normalizer\ArticleNormalizer
+        tags:
+            -  { name: serializer.normalizer }
+
+    app.pagination:
+        class: AppBundle\Service\DoctrinePaginate
+        public: true
+        arguments:
+            ["@request_stack", %pagination_page_name%, %pagination_limit_name%, %pagination_limit%]
